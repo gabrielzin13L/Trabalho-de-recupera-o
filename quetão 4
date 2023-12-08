@@ -1,0 +1,73 @@
+import tkinter as tk
+from tkinter import messagebox
+
+class CalculadoraMedia:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Calculadora de Média Anual")
+
+        self.criar_interface()
+
+    def criar_interface(self):
+        # Variáveis para armazenar os valores das notas
+        self.nome_var = tk.StringVar()
+        self.nota1_var = tk.DoubleVar()
+        self.nota2_var = tk.DoubleVar()
+        self.nota3_var = tk.DoubleVar()
+
+        # Rótulos e campos de entrada
+        tk.Label(self.root, text="Nome do Aluno:").grid(row=0, column=0, padx=10, pady=5, sticky=tk.W)
+        tk.Entry(self.root, textvariable=self.nome_var).grid(row=0, column=1, padx=10, pady=5)
+
+        tk.Label(self.root, text="Nota Trimestre 1:").grid(row=1, column=0, padx=10, pady=5, sticky=tk.W)
+        tk.Entry(self.root, textvariable=self.nota1_var).grid(row=1, column=1, padx=10, pady=5)
+
+        tk.Label(self.root, text="Nota Trimestre 2:").grid(row=2, column=0, padx=10, pady=5, sticky=tk.W)
+        tk.Entry(self.root, textvariable=self.nota2_var).grid(row=2, column=1, padx=10, pady=5)
+
+        tk.Label(self.root, text="Nota Trimestre 3:").grid(row=3, column=0, padx=10, pady=5, sticky=tk.W)
+        tk.Entry(self.root, textvariable=self.nota3_var).grid(row=3, column=1, padx=10, pady=5)
+
+        # Botões
+        tk.Button(self.root, text="Calcular", command=self.calcular_media).grid(row=4, column=0, columnspan=2, pady=10)
+        tk.Button(self.root, text="Limpar", command=self.limpar_campos).grid(row=5, column=0, columnspan=2, pady=5)
+
+    def calcular_media(self):
+        try:
+            # Obtendo os valores das notas
+            nota1 = self.nota1_var.get()
+            nota2 = self.nota2_var.get()
+            nota3 = self.nota3_var.get()
+
+            # Calculando a média
+            media = (nota1 + nota2 + nota3) / 3
+
+            # Verificando se a média é maior ou igual a 6.0
+            resultado = "Aprovado" if media >= 6.0 else "Reprovado"
+
+            # Exibindo o resultado em uma nova janela
+            self.mostrar_resultado(media, resultado)
+
+        except ValueError:
+            messagebox.showerror("Erro", "Por favor, insira valores numéricos para as notas.")
+
+    def mostrar_resultado(self, media, resultado):
+        # Criando uma nova janela para exibir o resultado
+        resultado_window = tk.Toplevel(self.root)
+        resultado_window.title("Resultado")
+
+        # Exibindo a média e o resultado
+        tk.Label(resultado_window, text=f"Média Final: {media:.2f}").pack(pady=5)
+        tk.Label(resultado_window, text=f"Resultado: {resultado}").pack(pady=5)
+
+    def limpar_campos(self):
+        # Limpando os campos de entrada
+        self.nome_var.set("")
+        self.nota1_var.set(0.0)
+        self.nota2_var.set(0.0)
+        self.nota3_var.set(0.0)
+
+# Criando a aplicação
+root = tk.Tk()
+app = CalculadoraMedia(root)
+root.mainloop()
